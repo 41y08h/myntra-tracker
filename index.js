@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 const fetch = require("node-fetch");
+const http = require("http");
 
 const {
   senderGmail,
@@ -47,7 +48,7 @@ setInterval(() => {
         );
 
         const { price: currentPrice } = latestProduct;
-        if (product.lastPrice !== currentPrice) {
+        if (product.lastPrice !== parseInt(currentPrice)) {
           // Notify by mail
           notify({ product, currentPrice });
           // Update lastPrice
@@ -58,4 +59,11 @@ setInterval(() => {
   });
 }, trackInterval);
 
-console.log("Myntra Tracker Application Started");
+const server = http.createServer((req, res) => {
+  res.write("Working hard and smart :)");
+  res.end();
+});
+
+server.listen(process.env.PORT || 5000, () =>
+  console.log("Myntra Tracker Application Started")
+);
