@@ -4,8 +4,8 @@
   "description": "Tracks Myntra product price",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node index.js",
-    "dev": "cross-env NODE_ENV=development nodemon index.js"
+    "start": "node index",
+    "dev": "cross-env NODE_ENV=development nodemon index"
   },
   "author": "Piyush",
   "license": "MIT",

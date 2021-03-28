@@ -1,15 +1,8 @@
-const nodemailer = require("nodemailer");
 const fetch = require("node-fetch");
 const http = require("http");
 
-const {
-  senderGmail,
-  senderGmailPassword,
-  scraperApiKey,
-  receiverEmail,
-  receiverName,
-  trackInterval,
-} = require("./config");
+const { scraperApiKey, receiverName, trackInterval } = require("./config");
+const sendMail = require("./lib/sendMail");
 
 const products = [
   {
@@ -19,22 +12,14 @@ const products = [
   },
 ];
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: { user: senderGmail, pass: senderGmailPassword },
-});
-
 function notify({ product, currentPrice }) {
-  const mail = {
-    from: senderGmail,
-    to: receiverEmail,
+  sendMail({
     subject: `>> Myntra Price Fluctuated for ${product.name}`,
     text: `Oh ${receiverName}, Last Price was Rs. ${product.lastPrice} and Current Price is Rs. ${currentPrice}`,
-  };
-  transporter.sendMail(mail).then((info) => console.log(info.response));
+  }).then((info) => console.log(info.response));
 }
 
-setInterval(() => {
+function track() {
   products.forEach((product) => {
     const scraperURL = `http://api.scraperapi.com?api_key=${scraperApiKey}&url=${product.url}`;
     fetch(scraperURL)
@@ -58,12 +43,16 @@ setInterval(() => {
       .catch((err) => console.log(err.message));
   });
 
-  // Wake up dyno
-  fetch("http://myntra-tracker.herokuapp.com")
-       .then(res => res.text())
-       .then(console.log)
-       .catch((err) => console.log("Failed to wake dyno : ", err.message)) 
-}, trackInterval);
+  // Wake up dyno in production
+  if (process.env.NODE_ENV === "production")
+    fetch("http://myntra-tracker.herokuapp.com")
+      .then((res) => res.text())
+      .then(console.log)
+      .catch((err) => console.log("Failed to wake dyno : ", err.message));
+}
+
+track();
+setInterval(track, trackInterval);
 
 const server = http.createServer((req, res) => {
   res.write("Working hard and smart :)");
