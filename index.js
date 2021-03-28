@@ -48,7 +48,7 @@ setInterval(() => {
         );
 
         const { price: currentPrice } = latestProduct;
-        if (product.lastPrice !== parseInt(currentPrice)) {
+        if (parseInt(product.lastPrice) !== parseInt(currentPrice)) {
           // Notify by mail
           notify({ product, currentPrice });
           // Update lastPrice
