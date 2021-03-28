@@ -59,7 +59,7 @@ setInterval(() => {
   });
 
   // Wake up dyno
-  fetch("http://myntra-tracker.herokuapp.com").
+  fetch("http://myntra-tracker.herokuapp.com")
        .then(res => res.text())
        .then(console.log)
        .catch((err) => console.log("Failed to wake dyno : ", err.message)) 
