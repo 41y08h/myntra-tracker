@@ -15,3 +15,5 @@ soup = BeautifulSoup(res.text, "html.parser")
 data = soup.find_all("script", type="application/ld+json")[1].encode_contents()
 
 print(json.dumps(json.loads(data)))
+
+sys.stdout.flush()  # <---- Important for node to work with python
