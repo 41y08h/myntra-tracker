@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon  -r dotenv/config server dotenv_config_path=env_vars/.env.development",
-    "staging": "node -r dotenv/config server dotenv_config_path=env_vars/.env.staging"
+    "dev": "nodemon -r dotenv/config server dotenv_config_path=.env.development"
   },
   "author": "Piyush",
   "license": "MIT",
