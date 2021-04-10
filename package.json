@@ -1,6 +1,6 @@
 {
   "name": "myntra-tracker",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Tracks Myntra product price",
   "main": "index.js",
   "scripts": {
